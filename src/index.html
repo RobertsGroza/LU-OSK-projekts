@@ -8,32 +8,79 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.5.0"></script>
     <link rel="stylesheet" href="css/style.scss">
   </head>
   <body>
-  <div class="container base-container mt-3 rounded">
-    <div class="row">
-      <div class="m-3">
+    <div class="container base-container mt-3 mb-3 rounded">
+      <div class="row m-3">
         <h2>Diska plānošanas algoritmu vizualizācija</h2>
       </div>
-    </div>
-    <div class="row">
-      <div class="m-3">
-        <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-          standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
-          type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-          remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-          Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-        </p>
+      <div class="row m-3">
+        <form class="w-100">
+          <div class="form-group row">
+            <label class="col-3" for="queue">
+              Rinda
+            </label>
+            <div class="col-9 p-0">
+              <input class="form-control" type="text" id="queue">
+              <small class="form-text text-muted">Rindas elementus atdala ar komatu (piemēram: 31, 12, 23)</small>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-3" for="headStartPosition">
+              Diska galviņas starta pozīcija
+            </label>
+            <input class="form-control col-9" type="text" id="headStartPosition">
+          </div>
+          <div class="form-group row">
+            <label class="col-3" for="algorhytm">
+              Algoritms
+            </label>
+            <select class="form-control col-9" id="algorhytm">
+              <option value="FCFS">FCFS</option>
+              <option value="SSTF">SSTF</option>
+              <option value="SCAN">SCAN</option>
+              <option value="C-SCAN">C-SCAN</option>
+              <option value="C-LOOK">C-LOOK</option>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="col-3">
+              Sākuma virziens
+            </label>
+            <div class="col-9 p-0">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" name="startDirection" type="radio" id="startRight" value="option1" checked>
+                <label class="form-check-label" for="startRight">No kreisās uz labo</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" name="startDirection" type="radio" id="startLeft" value="option2">
+                <label class="form-check-label" for="startLeft">No labās uz kreiso</label>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="w-100">
+          <button class="btn btn-outline-primary float-left" onclick="clearForm()">Notīrīt formu</button>
+          <button type="submit" class="btn btn-primary float-right" onclick="visualize()">Vizualizēt</button>
+        </div>
+      </div>
+
+      <div id="result" class="d-none">
+        <hr>
+        <div class="row m-3">
+          <h5>Rezultāts:</h5>
+        </div>
+        <div class="row m-3">
+          <p>Apstaigāto cilindru skaits: <b id="numberOfWalkedCilinders">44</b></p>
+        </div>
+        <div class="row m-3 mx-auto">
+          <canvas id="myChart"></canvas>
+        </div>
       </div>
     </div>
-    <div class="row">
-      <div class="m-3">
-        <canvas id="myChart" width="400" height="400"></canvas>
-      </div>
-    </div>
-  </div>
   </body>
   <script type="text/javascript" src="js/resultChart.js"></script>
+  <script type="text/javascript" src="js/functions.js"></script>
 </html>
