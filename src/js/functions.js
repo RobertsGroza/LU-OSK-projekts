@@ -2,11 +2,12 @@
 function algorithmChange() {
   let algorithm = document.getElementById('algorithm');
   let selectedAlgorithm = algorithm.options[algorithm.selectedIndex].value;
+  let checkboxDiv = document.getElementById('algorithmDirectionRadio');
 
   if (selectedAlgorithm === 'FCFS' || selectedAlgorithm === 'SSTF') {
-    document.getElementById('algorithmDirectionRadio').classList.add('d-none');
+    checkboxDiv.classList.add('d-none');
   }  else {
-    document.getElementById('algorithmDirectionRadio').classList.remove('d-none');
+    checkboxDiv.classList.remove('d-none');
   }
 }
 
@@ -15,10 +16,12 @@ function clearForm() {
   let queue = document.getElementById('queue');
   let startPosition = document.getElementById('headStartPosition');
   let resultDiv = document.getElementById('result');
+  let cylinderCount = document.getElementById('cylinderCount');
 
   // Clear form values and hide div
   queue.value = '';
   startPosition.value = '';
+  cylinderCount.value = '';
   resultDiv.classList.add('d-none');
 }
 
