@@ -37,12 +37,6 @@ function visualize() {
   let cylinderArray = queue.value.replace(/\s/g, "").split(",").map(v => parseInt(v)); // get queue as integer array
   let resultArray;
 
-  cylinderArray = [98, 183, 37, 122, 14, 124, 65, 67];
-  startPosition = 53;
-  cylinderCount = 200;
-
-  console.log('before: ', cylinderArray);
-
   // Depending on input values determines which function is called
   switch (algorithm.options[algorithm.selectedIndex].value) {
     case 'FCFS':
@@ -58,11 +52,9 @@ function visualize() {
       resultArray = startRightCheckbox.checked ? CSCANLeftToRight(startPosition, cylinderArray, cylinderCount) : CSCANRightToLeft(startPosition, cylinderArray, cylinderCount);
       break;
     case 'C-LOOK':
-      startRightCheckbox.checked ? CLOOKLeftToRight() : CLOOKRightToLeft();
+      resultArray = startRightCheckbox.checked ? CLOOKLeftToRight(startPosition, cylinderArray) : CLOOKRightToLeft(startPosition, cylinderArray);
       break;
   }
-
-  console.log('after: ', cylinderArray);
 
   // Count number of cylinders walked
   cylinderSequence.innerHTML = resultArray.join(', ');
@@ -217,10 +209,44 @@ function CSCANRightToLeft(startingPosition, cylinderArray, cylinderCount) {
 
 // CLOOK Algorithm realisation and first direction is left to right
 function CLOOKLeftToRight(startingPosition, cylinderArray, cylinderCount) {
-  console.log('clook-left');
+  let resultArray = [].concat(cylinderArray); // Concat so cylinder array do not get changed in process
+  resultArray.push(startingPosition);
+  resultArray.sort((a, b) => a - b); // Sakārto doto masīvu augošā secībā
+
+  let startingIndex = resultArray.indexOf(startingPosition);
+  let resultArray2 = [];
+
+  for (let i = startingIndex; i < resultArray.length; i++) {
+    resultArray2.push(resultArray[i]);
+  }
+
+  if (startingIndex !== 0) {
+    for (let i = 0; i < startingIndex; i++) {
+      resultArray2.push(resultArray[i]);
+    }
+  }
+
+  return resultArray2;
 }
 
 // CLOOK Algorithm realisation and first direction is right to left
 function CLOOKRightToLeft(startingPosition, cylinderArray) {
-  console.log('clook-right');
+  let resultArray = [].concat(cylinderArray); // Concat so cylinder array do not get changed in process
+  resultArray.push(startingPosition);
+  resultArray.sort((a, b) => b - a); // Sakārto doto masīvu distošā secībā
+
+  let startingIndex = resultArray.indexOf(startingPosition);
+  let resultArray2 = [];
+
+  for (let i = startingIndex; i < resultArray.length; i++) {
+    resultArray2.push(resultArray[i]);
+  }
+
+  if (startingIndex !== resultArray.length) {
+    for (let i = 0; i < startingIndex; i++) {
+      resultArray2.push(resultArray[i]);
+    }
+  }
+
+  return resultArray2;
 }
