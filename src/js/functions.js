@@ -1,3 +1,4 @@
+// Function gets called on select change
 function algorithmChange() {
   let algorithm = document.getElementById('algorithm');
   let selectedAlgorithm = algorithm.options[algorithm.selectedIndex].value;
@@ -90,19 +91,19 @@ function SSTF(startingPosition, cylinderArray) {
   resultArray[0] = startingPosition;
 
   for (let i = 0; i < cylinderArray.length; i++) {
-    // atrod tuvākā elementa indexu rezultāta masīva pēdējam elementam, turklāt indekss nevar atrastes izmantoto indexu masīvā
-    let smallestDiffIndex = -1; // Norāda, ka otrais for cikls tikko sākās
+    // Finds closest elements index to last element of resultArray & check if index is not already placed in result array
+    let smallestDiffIndex = -1; // -1 means that in this cycle there is not found unused element
     let smallestDiff;
 
     for (let j = 0; j < cylinderArray.length; j++) {
-      // Pieņem, ka pirmais elements masīvā, kas nav izmantots ir ar vismazāko starpību
+      // Presume that first unused element is closest
       if (smallestDiffIndex === -1 && !usedArrayIndexes.includes(j)) {
         smallestDiff = Math.abs(resultArray[resultArray.length - 1] - cylinderArray[j]);
         smallestDiffIndex = j;
         continue;
       }
 
-      // Ja tas nav pirmais elements, kas nav jau iekļauts rezultāta sarakstā tad pārbauda, vai starpība nav mazāka
+      // If that is not first unused element, then check if difference is smaller
       let diff = Math.abs(resultArray[resultArray.length - 1] - cylinderArray[j]);
       if (smallestDiffIndex !== -1 && !usedArrayIndexes.includes(j) && diff < smallestDiff) {
         smallestDiff = diff;
@@ -110,7 +111,7 @@ function SSTF(startingPosition, cylinderArray) {
       }
     }
 
-    // rezultātu masīvam pievieno atrasto elementu
+    // Add found closest element to result array
     usedArrayIndexes.push(smallestDiffIndex);
     resultArray.push(cylinderArray[smallestDiffIndex]);
   }
@@ -120,133 +121,133 @@ function SSTF(startingPosition, cylinderArray) {
 
 // SCAN Algorithm realisation and first direction is left to right
 function SCANLeftToRight(startingPosition, cylinderArray, cylinderCount) {
-  let resultArray = [].concat(cylinderArray); // Concat so cylinder array do not get changed in process
-  resultArray.push(startingPosition);
-  resultArray.sort((a, b) => a - b); // Sakārto doto masīvu augošā secībā
-  !resultArray.includes(cylinderCount - 1) && resultArray.push(cylinderCount - 1);  // Pievieno galējo cilindru masīva beigās
+  let sortedArray = [].concat(cylinderArray); // Concat so cylinder array do not get changed in process
+  sortedArray.push(startingPosition);
+  sortedArray.sort((a, b) => a - b); // Sort the array in ascending order
+  !sortedArray.includes(cylinderCount - 1) && sortedArray.push(cylinderCount - 1);  // Add last cylinder to the end of the array
 
-  let startingIndex = resultArray.indexOf(startingPosition);
+  let startingIndex = sortedArray.indexOf(startingPosition);
 
-  let resultArray2 = [];
-  for (let i = startingIndex; i < resultArray.length; i++) {
-    resultArray2.push(resultArray[i]);
+  let resultArray = [];
+  for (let i = startingIndex; i < sortedArray.length; i++) {
+    resultArray.push(sortedArray[i]);
   }
 
   for (let i = startingIndex - 1; i >= 0; i--) {
-    resultArray2.push(resultArray[i]);
+    resultArray.push(sortedArray[i]);
   }
-  return resultArray2;
+  return resultArray;
 }
 
 // SCAN Algorithm realisation and first direction is right to left
 function SCANRightToLeft(startingPosition, cylinderArray) {
-  let resultArray = [].concat(cylinderArray); // Concat so cylinder array do not get changed in process
-  resultArray.push(startingPosition);
-  resultArray.sort((a, b) => b - a); // Sakārto doto masīvu distošā secībā
-  !resultArray.includes(0) && resultArray.push(0);  // pievieno mazāko cilindru masīva beigās
+  let sortedArray = [].concat(cylinderArray); // Concat so cylinder array do not get changed in process
+  sortedArray.push(startingPosition);
+  sortedArray.sort((a, b) => b - a); // Sort the array in descending order
+  !sortedArray.includes(0) && sortedArray.push(0); // Add 0th cylinder to end of the array
 
-  let startingIndex = resultArray.indexOf(startingPosition);
+  let startingIndex = sortedArray.indexOf(startingPosition);
 
-  let resultArray2 = [];
-  for (let i = startingIndex; i < resultArray.length; i++) {
-    resultArray2.push(resultArray[i]);
+  let resultArray = [];
+  for (let i = startingIndex; i < sortedArray.length; i++) {
+    resultArray.push(sortedArray[i]);
   }
 
   for (let i = startingIndex - 1; i >= 0; i--) {
-    resultArray2.push(resultArray[i]);
+    resultArray.push(sortedArray[i]);
   }
 
-  return resultArray2;
+  return resultArray;
 }
 
 // CSCAN Algorithm realisation and first direction is left to right
 function CSCANLeftToRight(startingPosition, cylinderArray, cylinderCount) {
-  let resultArray = [].concat(cylinderArray); // Concat so cylinder array do not get changed in process
-  resultArray.push(startingPosition);
-  resultArray.sort((a, b) => a - b); // Sakārto doto masīvu augošā secībā
-  !resultArray.includes(0) && resultArray.unshift(0);  // Pievieno pirmo cilindru masīva sākumā
-  !resultArray.includes(cylinderCount - 1) && resultArray.push(cylinderCount - 1);  // Pievieno galējo cilindru masīva beigās
+  let sortedArray = [].concat(cylinderArray); // Concat so cylinder array do not get changed in process
+  sortedArray.push(startingPosition);
+  sortedArray.sort((a, b) => a - b); // Sort the array in ascending order
+  !sortedArray.includes(0) && sortedArray.unshift(0);  // Add 0th cylinder to end of the array
+  !sortedArray.includes(cylinderCount - 1) && sortedArray.push(cylinderCount - 1);  // Add last cylinder to the end of the array
 
-  let startingIndex = resultArray.indexOf(startingPosition);
-  let resultArray2 = [];
+  let startingIndex = sortedArray.indexOf(startingPosition);
+  let resultArray = [];
 
-  for (let i = startingIndex; i < resultArray.length; i++) {
-    resultArray2.push(resultArray[i]);
+  for (let i = startingIndex; i < sortedArray.length; i++) {
+    resultArray.push(sortedArray[i]);
   }
 
   if (startingIndex !== 0) {
     for (let i = 0; i < startingIndex; i++) {
-      resultArray2.push(resultArray[i]);
+      resultArray.push(sortedArray[i]);
     }
   }
 
-  return resultArray2;
+  return resultArray;
 }
 
 // CSCAN Algorithm realisation and first direction is right to left
 function CSCANRightToLeft(startingPosition, cylinderArray, cylinderCount) {
-  let resultArray = [].concat(cylinderArray); // Concat so cylinder array do not get changed in process
-  resultArray.push(startingPosition);
-  resultArray.sort((a, b) => b - a); // Sakārto doto masīvu distošā secībā
-  !resultArray.includes(0) && resultArray.push(0);  // Pievieno pirmo cilindru masīva sākumā
-  !resultArray.includes(cylinderCount - 1) && resultArray.unshift(cylinderCount - 1);  // Pievieno galējo cilindru masīva beigās
+  let sortedArray = [].concat(cylinderArray); // Concat so cylinder array do not get changed in process
+  sortedArray.push(startingPosition);
+  sortedArray.sort((a, b) => b - a); // Sort the array in descending order
+  !sortedArray.includes(0) && sortedArray.push(0);  // Add 0th cylinder to end of the array
+  !sortedArray.includes(cylinderCount - 1) && sortedArray.unshift(cylinderCount - 1);  // Add last cylinder to the end of the array
 
-  let startingIndex = resultArray.indexOf(startingPosition);
-  let resultArray2 = [];
+  let startingIndex = sortedArray.indexOf(startingPosition);
+  let resultArray = [];
 
-  for (let i = startingIndex; i < resultArray.length; i++) {
-    resultArray2.push(resultArray[i]);
+  for (let i = startingIndex; i < sortedArray.length; i++) {
+    resultArray.push(sortedArray[i]);
   }
 
-  if (startingIndex !== resultArray.length) {
+  if (startingIndex !== sortedArray.length) {
     for (let i = 0; i < startingIndex; i++) {
-      resultArray2.push(resultArray[i]);
+      resultArray.push(sortedArray[i]);
     }
   }
 
-  return resultArray2;
+  return resultArray;
 }
 
 // CLOOK Algorithm realisation and first direction is left to right
 function CLOOKLeftToRight(startingPosition, cylinderArray, cylinderCount) {
-  let resultArray = [].concat(cylinderArray); // Concat so cylinder array do not get changed in process
-  resultArray.push(startingPosition);
-  resultArray.sort((a, b) => a - b); // Sakārto doto masīvu augošā secībā
+  let sortedArray = [].concat(cylinderArray);
+  sortedArray.push(startingPosition);
+  sortedArray.sort((a, b) => a - b);
 
-  let startingIndex = resultArray.indexOf(startingPosition);
-  let resultArray2 = [];
+  let startingIndex = sortedArray.indexOf(startingPosition);
+  let resultArray = [];
 
-  for (let i = startingIndex; i < resultArray.length; i++) {
-    resultArray2.push(resultArray[i]);
+  for (let i = startingIndex; i < sortedArray.length; i++) {
+    resultArray.push(sortedArray[i]);
   }
 
   if (startingIndex !== 0) {
     for (let i = 0; i < startingIndex; i++) {
-      resultArray2.push(resultArray[i]);
+      resultArray.push(sortedArray[i]);
     }
   }
 
-  return resultArray2;
+  return resultArray;
 }
 
 // CLOOK Algorithm realisation and first direction is right to left
 function CLOOKRightToLeft(startingPosition, cylinderArray) {
-  let resultArray = [].concat(cylinderArray); // Concat so cylinder array do not get changed in process
-  resultArray.push(startingPosition);
-  resultArray.sort((a, b) => b - a); // Sakārto doto masīvu distošā secībā
+  let sortedArray = [].concat(cylinderArray);
+  sortedArray.push(startingPosition);
+  sortedArray.sort((a, b) => b - a);
 
-  let startingIndex = resultArray.indexOf(startingPosition);
-  let resultArray2 = [];
+  let startingIndex = sortedArray.indexOf(startingPosition);
+  let resultArray = [];
 
-  for (let i = startingIndex; i < resultArray.length; i++) {
-    resultArray2.push(resultArray[i]);
+  for (let i = startingIndex; i < sortedArray.length; i++) {
+    resultArray.push(sortedArray[i]);
   }
 
-  if (startingIndex !== resultArray.length) {
+  if (startingIndex !== sortedArray.length) {
     for (let i = 0; i < startingIndex; i++) {
-      resultArray2.push(resultArray[i]);
+      resultArray.push(sortedArray[i]);
     }
   }
 
-  return resultArray2;
+  return resultArray;
 }

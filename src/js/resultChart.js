@@ -1,3 +1,4 @@
+// Function for drawing chart (Chart.js)
 function drawChart(cylinderArray) {
   var ctx = document.getElementById('myChart');
 
