@@ -11,12 +11,35 @@ function algorithmChange() {
   }
 }
 
+// Function for form data validation
+function validateForm() {
+  // Find elements
+  let queue = document.getElementById('queue');
+  let startPosition = document.getElementById('headStartPosition');
+  let cylinderCount = document.getElementById('cylinderCount');
+
+  if (queue.value === '') {
+    alert('Rinda nedrīkst būt tukša!');
+    return false;
+  }
+
+  if (startPosition.value === '') {
+    alert('Lūdzu, norādiet diska galviņas starta pozīciju!');
+    return false;
+  }
+
+  if (cylinderCount.value === '') {
+    alert('Lūdzu, ievadiet cilindru skaitu!');
+    return false;
+  }
+}
+
 function clearForm() {
   // Find elements
   let queue = document.getElementById('queue');
   let startPosition = document.getElementById('headStartPosition');
-  let resultDiv = document.getElementById('result');
   let cylinderCount = document.getElementById('cylinderCount');
+  let resultDiv = document.getElementById('result');
 
   // Clear form values and hide div
   queue.value = '';
@@ -26,6 +49,11 @@ function clearForm() {
 }
 
 function visualize() {
+  // Validate form (if validation failed do not execute visualization function)
+  if (validateForm() === false) {
+    return false;
+  }
+
   // Find elements
   let queue = document.getElementById('queue');
   let startPosition = parseInt(document.getElementById('headStartPosition').value);
