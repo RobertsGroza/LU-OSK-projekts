@@ -1,10 +1,10 @@
-function drawChart(cilinderArray) {
+function drawChart(cylinderArray) {
   var ctx = document.getElementById('myChart');
 
   Chart.helpers.merge(Chart.defaults.global.plugins.datalabels, {});
 
   // Create points array for scatter chart from given cilinder array
-  let pointsArray = Object.assign([], cilinderArray);
+  let pointsArray = Object.assign([], cylinderArray);
   pointsArray.map(function(el, index, arr) {
     arr[index] = {x: el, y: index + 1};
   });
@@ -55,7 +55,7 @@ function drawChart(cilinderArray) {
           afterBuildTicks: function (scatterChart, pointsArray) {
             scatterChart.ticks = [];
 
-            cilinderArray.map(function(element) {
+            cylinderArray.map(function(element) {
               scatterChart.ticks.push(element);
             });
           }
