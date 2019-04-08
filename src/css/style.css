@@ -11,3 +11,8 @@ body {
   width: 100%;
   height: 600px;
 }
+
+.required-input-label:after {
+  content:"*";
+  color:red;
+}

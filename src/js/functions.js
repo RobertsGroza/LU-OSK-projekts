@@ -69,6 +69,11 @@ function visualize() {
   let cylinderArray = queue.value.replace(/\s/g, "").split(",").map(v => parseInt(v)); // get queue as integer array
   let resultArray;
 
+  if (cylinderCount <= Math.max(...cylinderArray, startPosition)) {
+    alert("Ievadīts nekorekts cilindru skaits\n(tam jābūt lielākam nekā lielākajam rindas elementam vai starta pozīcijai)");
+    return false;
+  }
+
   // Depending on input values determines which function is called
   switch (algorithm.options[algorithm.selectedIndex].value) {
     case 'FCFS':
