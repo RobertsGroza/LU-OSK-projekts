@@ -17,19 +17,33 @@ function validateForm() {
   let queue = document.getElementById('queue');
   let startPosition = document.getElementById('headStartPosition');
   let cylinderCount = document.getElementById('cylinderCount');
+  let queueError = document.getElementById('queue-error');
+  let startError = document.getElementById('start-error');
+  let cilinderBlank = document.getElementById('cilinder-blank-error');
+  let errors = 0;
 
   if (queue.value === '') {
-    alert('Rinda nedrīkst būt tukša!');
-    return false;
+    queueError.classList.remove('d-none');
+    errors++;
+  } else {
+    queueError.classList.add('d-none');
   }
 
   if (startPosition.value === '') {
-    alert('Lūdzu, norādiet diska galviņas starta pozīciju!');
-    return false;
+    startError.classList.remove('d-none');
+    errors++;
+  } else {
+    startError.classList.add('d-none');
   }
 
   if (cylinderCount.value === '') {
-    alert('Lūdzu, ievadiet cilindru skaitu!');
+    cilinderBlank.classList.remove('d-none');
+    errors++;
+  } else {
+    cilinderBlank.classList.add('d-none');
+  }
+
+  if (errors > 0) {
     return false;
   }
 }
@@ -69,9 +83,12 @@ function visualize() {
   let cylinderArray = queue.value.replace(/\s/g, "").split(",").map(v => parseInt(v)); // get queue as integer array
   let resultArray;
 
+  let cilinderCountError = document.getElementById('cilinder-count-error');
   if (cylinderCount <= Math.max(...cylinderArray, startPosition)) {
-    alert("Ievadīts nekorekts cilindru skaits\n(tam jābūt lielākam nekā lielākajam rindas elementam vai starta pozīcijai)");
+    cilinderCountError.classList.remove('d-none');
     return false;
+  } else {
+    cilinderCountError.classList.add('d-none');
   }
 
   // Depending on input values determines which function is called
